@@ -11,18 +11,11 @@ import { LoadingScreen } from './components/LoadingScreen';
 import { QuestionCard } from './components/QuestionCard';
 import { Sidebar } from './components/Sidebar';
 
-// Fix: Use the existing AIStudio type to avoid conflicts with global declarations
-declare global {
-  interface AIStudio {
-    hasSelectedApiKey: () => Promise<boolean>;
-    openSelectKey: () => Promise<void>;
-  }
-
-  interface Window {
-    // Correcting the modifier and type to match the expected global AIStudio definition
-    readonly aistudio?: AIStudio;
-  }
-}
+// Removed the declare global block that was causing the conflict.
+// The window.aistudio type is assumed to be provided by the environment
+// or an external type definition file, as per the coding guidelines
+// "Assume window.aistudio.hasSelectedApiKey() and window.aistudio.openSelectKey()
+// are pre-configured, valid, and accessible in the execution context."
 
 const App: React.FC = () => {
   const [appState, setAppState] = useState<AppState>(AppState.IDLE);
@@ -115,8 +108,8 @@ const App: React.FC = () => {
           </div>
           <h1 className="text-2xl font-bold text-slate-800 mb-4">APIキーの選択</h1>
           <p className="text-slate-500 mb-8 leading-relaxed text-sm">
-            Gemini 3 Proを使用するため、APIキーの選択が必要です。<br/>
-            有料プロジェクト（Billing設定済み）のキーを選択してください。
+            Gemini Flashモデルを使用するため、APIキーの選択が必要です。<br/>
+            Google Cloudプロジェクト（Billing設定済み）のキーを選択してください。
             <br />
             <a href="https://ai.google.dev/gemini-api/docs/billing" target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline text-xs mt-4 inline-block font-medium">
               請求設定についてはこちら <i className="fas fa-external-link-alt ml-1"></i>
@@ -152,7 +145,7 @@ const App: React.FC = () => {
               <i className="fas fa-graduation-cap"></i>
             </span>
             AceGrammar AI
-            <span className="text-sm font-normal text-slate-500 bg-slate-200 px-2 py-1 rounded">Pro</span>
+            <span className="text-sm font-normal text-slate-500 bg-slate-200 px-2 py-1 rounded">Flash</span>
           </h1>
           <p className="text-slate-600 mt-2">大学受験英語の「良問」をAIが厳選・分析して生成します。</p>
         </header>
@@ -210,7 +203,7 @@ const App: React.FC = () => {
         </div>
 
         <footer className="mt-12 py-6 border-t border-slate-200 text-center text-slate-400 text-xs">
-          Powered by Gemini 3 Pro - AceGrammar AI for Entrance Exams
+          Powered by Gemini Flash - AceGrammar AI for Entrance Exams
         </footer>
       </main>
     </div>

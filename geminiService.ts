@@ -13,10 +13,11 @@ export async function generateAndAnalyzeQuestion(
 
   // Create a new instance right before use to ensure the latest API key is used
   const ai = new GoogleGenAI({ apiKey });
-  const modelName = 'gemini-3-pro-preview';
+  // Changed model to gemini-flash-latest as per user's request for free/cost-effective usage
+  const modelName = 'gemini-flash-latest';
 
   const systemInstruction = `
-あなたは大学受験英語の最高峰のスペシャリスト（河合塾・駿台レベルの予備校講師）です。
+あなたは大学受験英語のスペシャリスト（予備校講師・問題作成者）です。
 ユーザーから指定された「文法項目」と「難易度」に基づき、大学入試の4択英文法問題を作成し、さらにそれを自ら9つの観点で批判的に分析・改善して最終回答を出力してください。
 
 【9つの分析・改善基準】
@@ -130,7 +131,6 @@ export async function generateAndAnalyzeQuestion(
     return result as GrammarQuestion;
   } catch (error: any) {
     console.error("Gemini API Error:", error);
-    // ガイドラインに従い、特定のプロジェクトエラーをApp.tsxで拾えるようにエラーを投げる
     if (error.message?.includes("Requested entity was not found")) {
       throw new Error("Requested entity was not found. 有料プロジェクトのAPIキーを再度選択してください。");
     }
