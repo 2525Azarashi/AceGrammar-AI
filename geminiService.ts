@@ -2,12 +2,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { GrammarCategory, Difficulty, GrammarQuestion } from "./types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 export async function generateAndAnalyzeQuestion(
   category: GrammarCategory,
   difficulty: Difficulty
 ): Promise<GrammarQuestion> {
+  // 実行直前に初期化することで、環境変数の参照エラーを回避し、常に最新のキーを使用します
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const modelName = 'gemini-3-pro-preview';
 
   const systemInstruction = `
